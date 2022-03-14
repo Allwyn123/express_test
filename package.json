@@ -1,0 +1,19 @@
+{
+  "name": "test2",
+  "version": "1.0.0",
+  "description": "user management",
+  "main": "user_manage.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Allwyn123/express_test.git"
+  },
+  "author": "Allwyn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Allwyn123/express_test/issues"
+  },
+  "homepage": "https://github.com/Allwyn123/express_test#readme"
+}

@@ -1,0 +1,23 @@
+[
+  {
+    "user_id": 1,
+    "name": "Alex Smith",
+    "phone": 9876542130,
+    "email": "abc@email.com",
+    "role": "admin"
+  },
+  {
+    "user_id": 2,
+    "name": "Mic Eric",
+    "phone": 9063587412,
+    "email": "abc@email.com",
+    "role": "user"
+  },
+  {
+    "user_id": 3,
+    "name": "John Stone",
+    "phone": 7854962135,
+    "email": "abc@email.com",
+    "role": "user"
+  }
+]
