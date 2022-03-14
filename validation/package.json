@@ -1,0 +1,11 @@
+{
+  "name": "validation",
+  "version": "1.0.0",
+  "description": "Checking Validation package",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Allwyn",
+  "license": "ISC"
+}
