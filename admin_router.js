@@ -1,47 +1,31 @@
 const express = require("express");
-const fs = require("fs");
+const tools = require("./tools");
+const user_data = require("./user.json");
 const app = express();
 const router = express.Router();
-const user_data = require("./user.json");
 
 router.get("/admin", (req, res) => {
     res.send(user_data);
 });
 
+router.get("/admin/:id", (req, res) => {
+    const disp = tools.display_func(req.params.id);
+    res.send(disp);
+});
+
 router.post("/admin", (req, res) => {
-    console.log(req.body);
-    create_func(req.body);
-    
-    console.log(user_data);
-    res.send({method: "post"});
+    tools.create_func(req.body);
+    res.send("User Created");
 });
 
 router.put("/admin/:id", (req, res) => {
-    res.send({method: "put"});
+    const upd = tools.update_func(req.body, req.params.id);
+    res.send(upd);
 });
 
 router.delete("/admin/:id", (req, res) => {
-    res.send({method: "delete"});
+    const del = tools.delete_func(req.params.id);
+    res.send(del);
 });
-
-const create_func = (data) => {
-    user_data.push(data);
-    const json_data = JSON.stringify(user_data);
-    upload_func(json_data);
-}
-
-const upload_func = (data) => {
-    fs.writeFile("user.json", data, (err) => {
-        if(err) throw err;
-        console.log("user created");
-    });
-}
-
-// const readData = fs.createReadStream(mypath);
-//     readData.on("data", (d) => {
-//         d = d.toString();
-//         d = d.replace(/Loan Calculator/,"My Loan Calculator");
-//         res.send(d);
-//     });
 
 exports.router = router;
