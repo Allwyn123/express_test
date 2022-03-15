@@ -29,14 +29,13 @@ const user_data = require("../user.json");
             user_data.push(new_data);
             const json_data = JSON.stringify(user_data);
             upload_func(json_data);
-            return;
+            return "User Created";
         }
 
-        console.log("ERROR: Enter full details of user");
-        return;
+        return "ERROR: Enter full details of user";
     }
 
-    console.log("Invalid Values");
+    return "Invalid Values";
 }
 
 /**

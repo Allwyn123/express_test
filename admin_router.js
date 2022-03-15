@@ -24,8 +24,8 @@ router.get("/admin/:id", (req, res) => {
 
 router.post("/admin", (req, res) => {
     if(req.session.user.role == "admin") {
-        tools.create_func(req.body);
-        res.send("User Created");
+        const cre = tools.create_func(req.body);
+        res.send(cre);
     } else {
         res.statusCode = 401;
         res.send(res.statusCode);
