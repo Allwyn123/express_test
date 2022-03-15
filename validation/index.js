@@ -34,4 +34,16 @@ const email_valid = (value) => {
     return true;
 }
 
-module.exports = { string_valid, phone_valid, email_valid }
+/**
+ * return a boolean is the value is validated
+ * @param {string} value password of user
+ * @returns boolean
+ */
+const password_valid = (value) => {
+    const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+
+    if(passwordPattern.test(value) == false) return false;
+    return true;
+}
+
+module.exports = { string_valid, phone_valid, email_valid, password_valid}
