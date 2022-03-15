@@ -10,10 +10,11 @@ const user_data = require("../user.json");
     const name = validation.string_valid(data.name);
     const phone = validation.phone_valid(data.phone);
     const email = validation.email_valid(data.email);
+    const password = validation.password_valid(data.password);
     const role = validation.string_valid(data.role);
 
-    if(name && phone && email && role) {
-        if(data.name != undefined &&  data.phone != undefined && data.email != undefined && data.role != undefined) {
+    if(name && phone && email && role && password) {
+        if(data.name != undefined &&  data.phone != undefined && data.email != undefined && data.role != undefined && data.password != undefined) {
             const id = user_data[user_data.length - 1].user_id + 1;
             
             const new_data = {
@@ -21,7 +22,8 @@ const user_data = require("../user.json");
                 name: data.name,
                 phone: data.phone,
                 email: data.email,
-                role: data.role
+                password: data.password,
+                role: data.role,
             };
 
             user_data.push(new_data);
@@ -46,6 +48,7 @@ const update_func = (data, uid) => {
     const name = validation.string_valid(data.name);
     const phone = validation.phone_valid(data.phone);
     const email = validation.email_valid(data.email);
+    const password = validation.password_valid(data.password);
     const role = validation.string_valid(data.role);
     let index, id_available, message;
 
@@ -80,6 +83,12 @@ const update_func = (data, uid) => {
         if(role && data.role != undefined) {
             user_data[index].role = data.role;
         } else if(!role) {
+            message = "Invalid Role";
+        }
+
+        if(password && data.password != undefined) {
+            user_data[index].password = data.password;
+        } else if(!password) {
             message = "Invalid Role";
         }
 
