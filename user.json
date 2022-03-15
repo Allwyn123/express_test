@@ -3,21 +3,24 @@
     "user_id": 1,
     "name": "Alex Smith",
     "phone": 9876542130,
-    "email": "abc@email.com",
+    "email": "alex@email.com",
+    "password": "Password@123",
     "role": "admin"
   },
   {
     "user_id": 2,
     "name": "Mic Eric",
     "phone": 9063587412,
-    "email": "abc@email.com",
+    "email": "mic@email.com",
+    "password": "Password@456",
     "role": "user"
   },
   {
     "user_id": 3,
     "name": "John Stone",
     "phone": 7854962135,
-    "email": "abc@email.com",
+    "email": "john@email.com",
+    "password": "Password@789",
     "role": "user"
   }
 ]
