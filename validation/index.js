@@ -5,9 +5,7 @@
  */
  const string_valid = (value) => {
     const stringPattern = /^[a-zA-Z]+$/;
-
-    if(stringPattern.test(value) == false) return false;
-    return true;
+    return stringPattern.test(value);
 }
 
 /**
@@ -16,10 +14,8 @@
  * @returns boolean
  */
 const phone_valid = (value) => {
-    const phonePattern = /^[0-9]{10}$/;
-
-    if(phonePattern.test(value) == false) return false;
-    return true;
+    const phonePattern = /^\d{10}$/;
+    return phonePattern.test(value);
 }
 
 /**
@@ -29,9 +25,7 @@ const phone_valid = (value) => {
  */
 const email_valid = (value) => {
     const emailPattern = /.+\@.+\..+/;
-
-    if(emailPattern.test(value) == false) return false;
-    return true;
+    return emailPattern.test(value);
 }
 
 /**
@@ -41,9 +35,7 @@ const email_valid = (value) => {
  */
 const password_valid = (value) => {
     const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
-
-    if(passwordPattern.test(value) == false) return false;
-    return true;
+    return passwordPattern.test(value);
 }
 
 module.exports = { string_valid, phone_valid, email_valid, password_valid}

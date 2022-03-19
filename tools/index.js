@@ -13,8 +13,8 @@ const user_data = require("../user.json");
     const password = validation.password_valid(data.password);
     const role = validation.string_valid(data.role);
 
-    if(name && phone && email && role && password) {
-        if(data.name != undefined &&  data.phone != undefined && data.email != undefined && data.role != undefined && data.password != undefined) {
+    if(data.name &&  data.phone && data.email && data.role && data.password) {
+        if(name && phone && email && role && password) {
             const id = user_data[user_data.length - 1].user_id + 1;
             
             const new_data = {
@@ -27,15 +27,28 @@ const user_data = require("../user.json");
             };
 
             user_data.push(new_data);
-            const json_data = JSON.stringify(user_data);
-            upload_func(json_data);
+            upload_func(JSON.stringify(user_data));
             return "User Created";
         }
 
-        return "ERROR: Enter full details of user";
-    }
+        const err_obj = [ 
+            {bool: name, err_mess: "Invalid Name" },
+            {bool: phone, err_mess: "Invalid Phone" },
+            {bool: email, err_mess: "Invalid Email" },
+            {bool: password, err_mess: "Invalid Password" },
+            {bool: role, err_mess: "Invalid Role" }
+        ];
 
-    return "Invalid Values";
+        const mess_obj = { status: "Not Created", error: [] };
+        for(let i of err_obj) {
+            if(!i.bool) mess_obj.error.push(i.err_mess);
+        }
+
+        if(mess_obj.error.length == 0) mess_obj.status = "Created";
+        return mess_obj;
+    }
+    
+    return "ERROR: Enter full details of user";
 }
 
 /**
@@ -51,52 +64,48 @@ const update_func = (data, uid) => {
     const role = validation.string_valid(data.role);
     let index, id_available, message;
 
-    user_data.forEach((e,i) => {
-        if(e.user_id == uid) {
+    user_data.find(({ user_id }, i) => {
+        if(user_id == uid) {
             id_available = true;
             index = i;
+            return true;
         }
     });
 
     if(id_available) {
-        message = "Updated";
+        message = { status: "Not Updated" , error: []};
 
-        if(name && data.name != undefined) {
-            user_data[index].name = data.name;
-        } else if(!name) {
-            message = "Invalid Name";
+        if(data.name) { 
+            if(name) user_data[index].name = data.name;
+            else message.error.push("Invalid Name");
         }
         
-        if(phone && data.phone != undefined) {
-            user_data[index].phone = data.phone;
-        } else if(!phone) {
-            message = "Invalid Phone no.";
+        if(data.phone) {
+            if(phone) user_data[index].phone = data.phone;
+            else message.error.push("Invalid Phone no.");
         }
 
-        if(email && data.email != undefined) {
-            user_data[index].email = data.email;
-        } else if(!email) {
-            message = "Invalid Email";
+        if(data.email) {
+            if(email) user_data[index].email = data.email;
+            else message.error.push("Invalid Email");
         }
 
-        if(role && data.role != undefined) {
-            user_data[index].role = data.role;
-        } else if(!role) {
-            message = "Invalid Role";
+        if(data.role) {
+            if(role) user_data[index].role = data.role;
+            else message.error.push("Invalid Role");
         }
 
-        if(password && data.password != undefined) {
-            user_data[index].password = data.password;
-        } else if(!password) {
-            message = "Invalid Role";
+        if(data.password) {
+            if(password) user_data[index].password = data.password;
+            else message.error.push("Invalid Password");
         }
 
-        const json_data = JSON.stringify(user_data);
-        upload_func(json_data);
+        upload_func(JSON.stringify(user_data));
+
+        if(message.error.length == 0) message.status = "Updated";
         return message;
-    } else {
-        return "ID Not Match";
-    }
+
+    } else return "User Not Found";
 }
 
 /**
@@ -105,20 +114,20 @@ const update_func = (data, uid) => {
  */
 const delete_func = (uid) => {
     let index, available;
-    user_data.forEach((e,i) => {
+    user_data.find((e,i) => {
         if(e.user_id == uid) {
             available = true;
             index = i;
+            return true;
         }
     });
 
     if(available) {
         user_data.splice(index, 1);
-        const json_data = JSON.stringify(user_data);
-        upload_func(json_data);
+        upload_func(JSON.stringify(user_data));
         return "User deleted"
     }
-    return "User ID Not Found";
+    return "User Not Found";
 }
 
 /**
@@ -127,18 +136,10 @@ const delete_func = (uid) => {
  * @returns JSON
  */
 const display_func = (uid) => {
-    let index, available;
-    user_data.forEach((e,i) => {
-        if(e.user_id == uid) {
-            index = i;
-            available = true;
-        }
-    });
-
-    if(available) return user_data[index];
+    return user_data.find((e) => e.user_id == uid);   
 }
 
-    /**
+/**
  * Upload file usign user data.
  * @param {JSON} data JSON data of user.
  */
