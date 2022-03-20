@@ -4,7 +4,7 @@
  * @returns boolean
  */
  const string_valid = (value) => {
-    const stringPattern = /^[a-zA-Z]+$/;
+    const stringPattern = /^[a-zA-Z, ]+$/;
     return stringPattern.test(value);
 }
 

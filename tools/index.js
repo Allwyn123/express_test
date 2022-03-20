@@ -3,8 +3,29 @@ const validation = require("../validation");
 const user_data = require("../user.json");
 
 /**
+ * return a boolean is the value of checking unique value
+ * @param {*} value User data
+ * @param {string} opt option
+ * @returns boolean
+ */
+const unique_func = (value, opt) => {
+    if(opt == "email") {
+        const unique = user_data.findIndex(e => e.email == value);
+        if(unique == -1) return true;
+        return false;
+    }
+
+    if(opt == "phone") {
+        const unique = user_data.findIndex(e => e.phone == value);
+        if(unique == -1) return true;
+        return false;
+    }
+}
+
+/**
  * This Function Represents Create User.
  * @param {JSON} data JSON data of User.
+ * @returns message
  */
  const create_func = (data) => {
     const name = validation.string_valid(data.name);
@@ -16,7 +37,9 @@ const user_data = require("../user.json");
     if(data.name &&  data.phone && data.email && data.role && data.password) {
         if(name && phone && email && role && password) {
             const id = user_data[user_data.length - 1].user_id + 1;
-            
+            data.name = data.name.trim();
+            data.role = data.role.trim();
+
             const new_data = {
                 user_id: id,
                 name: data.name,
@@ -26,9 +49,19 @@ const user_data = require("../user.json");
                 role: data.role,
             };
 
-            user_data.push(new_data);
-            upload_func(JSON.stringify(user_data));
-            return "User Created";
+            const uni_email = unique_func(data.email, "email");
+            const uni_phone = unique_func(data.phone, "phone");
+
+            if(uni_email && uni_phone) {
+                user_data.push(new_data);
+                upload_func(JSON.stringify(user_data));
+                return "User Created";
+            }
+         
+            const obj_message = {error: []};
+            if(!uni_email) obj_message.error.push("Email Already Exist");
+            if(!uni_phone) obj_message.error.push("Phone no. Already Exist");
+            return obj_message;
         }
 
         const err_obj = [ 
@@ -55,6 +88,7 @@ const user_data = require("../user.json");
  * This Function Represents Update User.
  * @param {JSON} data JSON data of User.
  * @param {integer} uid ID of User.
+ * @returns message
  */
 const update_func = (data, uid) => {
     const name = validation.string_valid(data.name);
@@ -68,7 +102,6 @@ const update_func = (data, uid) => {
         if(user_id == uid) {
             id_available = true;
             index = i;
-            return true;
         }
     });
 
@@ -81,12 +114,20 @@ const update_func = (data, uid) => {
         }
         
         if(data.phone) {
-            if(phone) user_data[index].phone = data.phone;
+            if(phone) {
+                const uni = unique_func(data.phone, "email");
+                if(uni) user_data[index].phone = data.phone;
+                else message.error.push("Phone no. Already Existed");
+            }
             else message.error.push("Invalid Phone no.");
         }
 
         if(data.email) {
-            if(email) user_data[index].email = data.email;
+            if(email) {
+                const uni = unique_func(data.email, "email");
+                if(uni) user_data[index].email = data.email;
+                else message.error.push("Email Already Existed");
+            }
             else message.error.push("Invalid Email");
         }
 
@@ -111,6 +152,7 @@ const update_func = (data, uid) => {
 /**
  * This Function Represents Delete User.
  * @param {integer} uid ID of user.
+ * @returns message
  */
 const delete_func = (uid) => {
     let index, available;
@@ -118,7 +160,6 @@ const delete_func = (uid) => {
         if(e.user_id == uid) {
             available = true;
             index = i;
-            return true;
         }
     });
 

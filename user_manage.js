@@ -1,5 +1,4 @@
 const express = require("express");
-// const admin_mod = require("./admin_router");
 const user_mod = require("./user_router");
 const app = express();
 const body_parser = require("body-parser");
@@ -18,7 +17,6 @@ app.post("/", (req, res) => {
         if(e.email == req.body.email) {
             if(e.password == req.body.password) {
                 req.session.user = { user_id: e.user_id, role: e.role };
-                console.log("create", req.session);
                 res.send(`login success (${e.role})`);
                 return e.password == req.body.password;
             } else res.send("login failed");
@@ -27,7 +25,6 @@ app.post("/", (req, res) => {
 });
 
 
-// app.use(admin_mod.router);
 app.use(user_mod.router);
 
 app.get("/logout", (req, res) => {
